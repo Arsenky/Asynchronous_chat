@@ -6,6 +6,30 @@ import time
 import json
 
 
+def receive_massage(client):
+    raw_massage = client.recv(256)
+    massage = json.loads(raw_massage.decode('utf-8'))
+    print('Получили сообщение от клиента')
+    return massage
+
+def send_presence_answer(client):
+    client.send(
+                (json.dumps({"response": 200, "alert": "Успешное подключение"})).encode('utf-8')
+                )
+    print('Отправили ответ')
+
+def process_massage(client, massage):
+
+    action = massage['action']
+
+    if action == 'presence':
+        send_presence_answer(client)
+    elif action == 'quit':
+        client.send((json.dumps({"response": "200", "alert": "Отключаюсь"})).encode('utf-8'))
+        print('Получен сигнал на отключение')
+        print('сеанс закрыт, сервер остановлен')
+        exit(1)
+
 def main(ip_addr, ip_port):
     print('MY Server RUN ^^^ ', end='')
 
@@ -17,20 +41,13 @@ def main(ip_addr, ip_port):
     srv_soc.listen(5)  # одновременно обслуживает не более 5 запросов
 
     while True:
-        print('--------------\nожидание приёма ')
         client, addr = srv_soc.accept()
+        print('--------------\nожидание приёма ')
         print('получаем запрос на соединение от ', addr)
 
-        clt_massage = client.recv(256)
-        action = json.loads(clt_massage.decode('utf-8'))['action']
+        massage = receive_massage(client)
 
-        if action == 'presence':
-            client.send(
-                (json.dumps({"response": 200, "alert": "Успешное подключение"})).encode('utf-8')
-                )
-        elif action == 'quit':
-            client.close()
-            print('сеанс закрыт')
+        process_massage(client, massage)
 
         
 
