@@ -6,7 +6,7 @@ import time
 import json
 
 def create_presence_massage():
-        connection_massage = { "action":"presence", "time": time.time(), 
+        connection_massage = { "action":"presence", "time": time.time(),
             "type":"status", "user": { "account_name":"C0deMaver1ck", "status":"Yep, I am here!" } 
             }
         return connection_massage
@@ -40,7 +40,7 @@ def main(ip_addr : str, ip_port : int):
     clt_soc.connect((str(ip_addr), int(ip_port)))
 
     send_presence_massage(clt_soc)
-
+    
     receive_answer(clt_soc)
 
     clt_soc.close()
