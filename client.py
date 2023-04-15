@@ -6,32 +6,32 @@ import time
 import json
 
 def create_presence_massage():
-        connection_massage = { "action":"presence", "time": time.time(), 
+        connection_massage = { "action":"presence", "time": time.time(),
             "type":"status", "user": { "account_name":"C0deMaver1ck", "status":"Yep, I am here!" } 
             }
         return connection_massage
         
-def send_presence_massage(clt_soc):
+def send_presence_massage(clt_soc : socket):
     massage = create_presence_massage()
     clt_soc.send((json.dumps(massage)).encode('utf-8'))
     print('Серверу отправленно presence - сообщение')
 
-def receive_answer(clt_soc):
+def receive_answer(clt_soc : socket) -> dict:
     massage = json.loads(clt_soc.recv(256).decode('utf-8'))
     print(f'Ответ от серевера: {massage["response"]}, {massage["alert"]}')
     return massage
 
 # функция отправки сигнала на остановку сервера
-def send_quit_signal(clt_soc):
+def send_quit_signal(clt_soc : socket):
     signal = { "action":"quit", "time": time.time()}
     clt_soc.send((json.dumps(signal)).encode('utf-8'))
     massage = json.loads(clt_soc.recv(256).decode('utf-8'))
     if massage["alert"] == 'Отключаюсь':
         print('Сервер отключился')
 
-def main(ip_addr, ip_port):
-    
-    clt_connect = (str(ip_addr), int(ip_port))
+def main(ip_addr : str, ip_port : int):
+
+    clt_connect = (ip_addr, ip_port)
     print(f'Клиент стартовал {clt_connect}')
 
     clt_soc = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
@@ -40,7 +40,7 @@ def main(ip_addr, ip_port):
     clt_soc.connect((str(ip_addr), int(ip_port)))
 
     send_presence_massage(clt_soc)
-
+    
     receive_answer(clt_soc)
 
     clt_soc.close()

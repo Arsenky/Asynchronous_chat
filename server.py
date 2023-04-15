@@ -6,19 +6,19 @@ import time
 import json
 
 
-def receive_massage(client):
+def receive_massage(client : socket) -> dict:
     raw_massage = client.recv(256)
     massage = json.loads(raw_massage.decode('utf-8'))
     print('Получили сообщение от клиента')
     return massage
 
-def send_presence_answer(client):
+def send_presence_answer(client : socket):
     client.send(
                 (json.dumps({"response": 200, "alert": "Успешное подключение"})).encode('utf-8')
                 )
     print('Отправили ответ')
 
-def process_massage(client, massage):
+def process_massage(client : socket, massage : dict):
 
     action = massage['action']
 
@@ -28,9 +28,9 @@ def process_massage(client, massage):
         client.send((json.dumps({"response": "200", "alert": "Отключаюсь"})).encode('utf-8'))
         print('Получен сигнал на отключение')
         print('сеанс закрыт, сервер остановлен')
-        exit(1)
+        exit(0)
 
-def main(ip_addr, ip_port):
+def main(ip_addr : str, ip_port: int):
     print('MY Server RUN ^^^ ', end='')
 
     srv_connect = (str(ip_addr), int(ip_port))
