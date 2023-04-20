@@ -1,12 +1,11 @@
 import logging
 import sys
 
-
-client_logger = logging.Logger('client')
+client_logger = logging.getLogger('client')
 
 formatter =logging.Formatter("%(asctime)s %(levelname)-10s %(module)s %(message)s ")
 
-fh = logging.FileHandler('client.log',  encoding='utf-8')
+fh = logging.FileHandler('log/client.log',  encoding='utf-8')
 fh.setLevel(logging.DEBUG) 
 fh.setFormatter(formatter)
 

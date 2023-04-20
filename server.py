@@ -4,7 +4,10 @@ from sys import argv, exit
 from socket import socket, AF_INET, SOCK_STREAM
 import time
 import json
-from log.server_log_config import server_logger
+import logging
+import log.server_log_config 
+
+server_logger = logging.getLogger('server')
 
 def receive_massage(client : socket) -> dict:
     raw_massage = client.recv(256)

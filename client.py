@@ -5,9 +5,9 @@ from socket import socket, AF_INET, SOCK_STREAM
 import time
 import json
 import logging
-from log.client_log_config import client_logger
- 
+import log.client_log_config 
 
+client_logger = logging.getLogger('client')
 
 def create_presence_massage():
         connection_massage = { "action":"presence", "time": time.time(),
