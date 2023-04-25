@@ -5,22 +5,26 @@ from socket import socket, AF_INET, SOCK_STREAM
 import time
 import json
 import logging
-import log.server_log_config 
+import log.server_log_config, log.server_log_config
+from log.log_decorator import log
 
 server_logger = logging.getLogger('server')
 
+@log
 def receive_massage(client : socket) -> dict:
     raw_massage = client.recv(256)
     massage = json.loads(raw_massage.decode('utf-8'))
     server_logger.info(f'Получили сообщение от клиента: {massage}')
     return massage
 
+@log
 def send_presence_answer(client : socket):
     client.send(
                 (json.dumps({"response": 200, "alert": "Успешное подключение"})).encode('utf-8')
                 )
     server_logger.info('Отправили ответ')
 
+@log
 def process_massage(client : socket, massage : dict):
 
     action = massage['action']

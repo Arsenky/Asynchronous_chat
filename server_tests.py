@@ -4,6 +4,7 @@ from server import receive_massage
 from client import send_presence_massage, create_presence_massage
 import time
 
+
 class TestServer(unittest.TestCase):
     
     # функция приёма presence-сообщения, в тесте симулируется и клиент и сервер
