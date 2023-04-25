@@ -4,3 +4,14 @@
 2023-04-20 21:33:39,048 INFO       client Ответ от серевера: 200, Успешное подключение 
 2023-04-20 21:33:39,059 WARNING    client Сервер отключился 
 2023-04-20 21:33:39,059 INFO       client Сеанс закончен 
+2023-04-23 17:14:59,998 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-04-23 17:16:52,607 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-04-23 17:16:52,608 INFO       client Сформированно сообщение серверу: {'action': 'presence', 'time': 1682259412.6081607, 'type': 'status', 'user': {'account_name': 'C0deMaver1ck', 'status': 'Yep, I am here!'}} 
+2023-04-23 17:16:52,618 DEBUG      log_decorator Функция create_presence_massage вызванна с аргументами ((), {})из функции send_presence_massage 
+2023-04-23 17:16:52,618 INFO       client Сообщение отправленно серверу 
+2023-04-23 17:16:52,619 DEBUG      log_decorator Функция send_presence_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40268), raddr=('127.0.0.1', 7777)>,), {})из функции main 
+2023-04-23 17:16:52,621 INFO       client Ответ от серевера: 200, Успешное подключение 
+2023-04-23 17:16:52,621 DEBUG      log_decorator Функция receive_answer вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40268), raddr=('127.0.0.1', 7777)>,), {})из функции main 
+2023-04-23 17:16:52,622 WARNING    client Сервер отключился 
+2023-04-23 17:16:52,622 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40280), raddr=('127.0.0.1', 7777)>,), {})из функции main 
+2023-04-23 17:16:52,622 INFO       client Сеанс закончен 
