@@ -1,17 +1,45 @@
-2023-04-20 21:33:39,045 INFO       client Клиент стартовал ('localhost', 7777) 
-2023-04-20 21:33:39,047 INFO       client Сформированно сообщение серверу: {'action': 'presence', 'time': 1682015619.0473635, 'type': 'status', 'user': {'account_name': 'C0deMaver1ck', 'status': 'Yep, I am here!'}} 
-2023-04-20 21:33:39,048 INFO       client Сообщение отправленно серверу 
-2023-04-20 21:33:39,048 INFO       client Ответ от серевера: 200, Успешное подключение 
-2023-04-20 21:33:39,059 WARNING    client Сервер отключился 
-2023-04-20 21:33:39,059 INFO       client Сеанс закончен 
-2023-04-23 17:14:59,998 INFO       client Клиент стартовал ('localhost', 7777) 
-2023-04-23 17:16:52,607 INFO       client Клиент стартовал ('localhost', 7777) 
-2023-04-23 17:16:52,608 INFO       client Сформированно сообщение серверу: {'action': 'presence', 'time': 1682259412.6081607, 'type': 'status', 'user': {'account_name': 'C0deMaver1ck', 'status': 'Yep, I am here!'}} 
-2023-04-23 17:16:52,618 DEBUG      log_decorator Функция create_presence_massage вызванна с аргументами ((), {})из функции send_presence_massage 
-2023-04-23 17:16:52,618 INFO       client Сообщение отправленно серверу 
-2023-04-23 17:16:52,619 DEBUG      log_decorator Функция send_presence_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40268), raddr=('127.0.0.1', 7777)>,), {})из функции main 
-2023-04-23 17:16:52,621 INFO       client Ответ от серевера: 200, Успешное подключение 
-2023-04-23 17:16:52,621 DEBUG      log_decorator Функция receive_answer вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40268), raddr=('127.0.0.1', 7777)>,), {})из функции main 
-2023-04-23 17:16:52,622 WARNING    client Сервер отключился 
-2023-04-23 17:16:52,622 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40280), raddr=('127.0.0.1', 7777)>,), {})из функции main 
-2023-04-23 17:16:52,622 INFO       client Сеанс закончен 
+2023-05-04 21:17:41,226 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:17:45,638 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:17:51,984 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224271.9842777, 'user_massage': 'Иди в жопу'} 
+2023-05-04 21:17:51,998 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:17:52,157 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224271.9842777, 'user_massage': 'Иди в жопу'} 
+2023-05-04 21:17:55,135 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224275.1358814, 'user_massage': 'ваавва'} 
+2023-05-04 21:17:55,136 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:17:55,163 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224275.1358814, 'user_massage': 'ваавва'} 
+2023-05-04 21:25:51,857 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:25:52,815 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:25:55,622 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224755.6220534, 'user_massage': 'fsfsfsf'} 
+2023-05-04 21:25:55,624 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:25:55,826 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224755.6220534, 'user_massage': 'fsfsfsf'} 
+2023-05-04 21:25:57,437 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224757.4379408, 'user_massage': 'sfshsdhsdg'} 
+2023-05-04 21:25:57,438 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:25:57,870 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224757.4379408, 'user_massage': 'sfshsdhsdg'} 
+2023-05-04 21:26:00,846 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224760.8466148, 'user_massage': "b dsmklfsdgjdfgnsfn fhnf'"} 
+2023-05-04 21:26:00,847 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:26:00,893 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224760.8466148, 'user_massage': "b dsmklfsdgjdfgnsfn fhnf'"} 
+2023-05-04 21:26:11,642 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:26:17,957 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
+2023-05-04 21:26:17,958 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:26:18,156 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
+2023-05-04 21:26:18,156 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
+2023-05-04 21:26:28,125 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
+2023-05-04 21:26:28,125 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:26:28,177 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
+2023-05-04 21:26:28,177 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
+2023-05-04 21:26:36,262 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
+2023-05-04 21:26:36,262 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:26:36,708 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
+2023-05-04 21:26:36,708 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
+2023-05-04 21:26:51,580 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:26:59,834 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:27:09,125 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224829.1259522, 'user_massage': 'fdfddfdf'} 
+2023-05-04 21:27:09,126 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:28:50,876 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:28:53,171 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:29:01,902 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-04 21:29:05,662 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224945.662727, 'user_massage': '111111'} 
+2023-05-04 21:29:05,665 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:29:05,930 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224945.662727, 'user_massage': '111111'} 
+2023-05-04 21:29:11,678 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224951.6785984, 'user_massage': '22222'} 
+2023-05-04 21:29:11,681 INFO       sender_client Сообщение отправленно серверу 
+2023-05-04 21:29:11,950 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224951.6785984, 'user_massage': '22222'} 
