@@ -58,10 +58,11 @@ def main(ip_addr : str, ip_port : int):
     clt_soc = socket(AF_INET, SOCK_STREAM)
     clt_soc.connect((str(ip_addr), int(ip_port)))
 
-    send_quit_signal(clt_soc)
+    # send_quit_signal(clt_soc)
 
 
     client_logger.info('Сеанс закончен')
+    n = input('ожидаю')
 
 
 
