@@ -1,45 +1,136 @@
-2023-05-04 21:17:41,226 INFO       sender_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:17:45,638 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:17:51,984 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224271.9842777, 'user_massage': 'Иди в жопу'} 
-2023-05-04 21:17:51,998 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:17:52,157 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224271.9842777, 'user_massage': 'Иди в жопу'} 
-2023-05-04 21:17:55,135 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224275.1358814, 'user_massage': 'ваавва'} 
-2023-05-04 21:17:55,136 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:17:55,163 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224275.1358814, 'user_massage': 'ваавва'} 
-2023-05-04 21:25:51,857 INFO       sender_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:25:52,815 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:25:55,622 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224755.6220534, 'user_massage': 'fsfsfsf'} 
-2023-05-04 21:25:55,624 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:25:55,826 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224755.6220534, 'user_massage': 'fsfsfsf'} 
-2023-05-04 21:25:57,437 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224757.4379408, 'user_massage': 'sfshsdhsdg'} 
-2023-05-04 21:25:57,438 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:25:57,870 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224757.4379408, 'user_massage': 'sfshsdhsdg'} 
-2023-05-04 21:26:00,846 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224760.8466148, 'user_massage': "b dsmklfsdgjdfgnsfn fhnf'"} 
-2023-05-04 21:26:00,847 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:26:00,893 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224760.8466148, 'user_massage': "b dsmklfsdgjdfgnsfn fhnf'"} 
-2023-05-04 21:26:11,642 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:26:17,957 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
-2023-05-04 21:26:17,958 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:26:18,156 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
-2023-05-04 21:26:18,156 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224777.9576204, 'user_massage': 'fdfdfdf'} 
-2023-05-04 21:26:28,125 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
-2023-05-04 21:26:28,125 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:26:28,177 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
-2023-05-04 21:26:28,177 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224788.125319, 'user_massage': '11111111111'} 
-2023-05-04 21:26:36,262 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
-2023-05-04 21:26:36,262 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:26:36,708 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
-2023-05-04 21:26:36,708 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224796.2620378, 'user_massage': 'Exit'} 
-2023-05-04 21:26:51,580 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:26:59,834 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:27:09,125 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224829.1259522, 'user_massage': 'fdfddfdf'} 
-2023-05-04 21:27:09,126 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:28:50,876 INFO       sender_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:28:53,171 INFO       receiver_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:29:01,902 INFO       sender_client Клиент стартовал ('localhost', 7777) 
-2023-05-04 21:29:05,662 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224945.662727, 'user_massage': '111111'} 
-2023-05-04 21:29:05,665 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:29:05,930 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224945.662727, 'user_massage': '111111'} 
-2023-05-04 21:29:11,678 INFO       sender_client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683224951.6785984, 'user_massage': '22222'} 
-2023-05-04 21:29:11,681 INFO       sender_client Сообщение отправленно серверу 
-2023-05-04 21:29:11,950 INFO       receiver_client Принято ообщение с серевера: {'action': 'massage', 'time': 1683224951.6785984, 'user_massage': '22222'} 
+2023-05-07 19:17:21,570 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:17:24,185 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:17:30,358 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476250.358243, 'user_massage': '42422442'} 
+2023-05-07 19:17:30,361 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:17:30,362 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:17:34,901 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476254.901839, 'user_massage': 'ggdgdgdg'} 
+2023-05-07 19:17:34,904 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:17:34,904 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:18:09,332 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476289.3322647, 'user_massage': 'exit'} 
+2023-05-07 19:18:09,332 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:18:09,333 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:19:06,126 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:19:07,567 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:19:20,746 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476360.7467213, 'user_massage': 'hello'} 
+2023-05-07 19:19:20,749 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:19:20,749 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:19:43,882 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476383.8827918, 'user_massage': 'salut'} 
+2023-05-07 19:19:43,885 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:19:43,885 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:20:41,881 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476441.8817885, 'user_massage': ''} 
+2023-05-07 19:20:41,882 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:20:41,882 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:20:44,074 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476444.0743253, 'user_massage': 'fff'} 
+2023-05-07 19:20:44,074 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:20:44,074 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:20:46,521 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476446.5215626, 'user_massage': 'ffff'} 
+2023-05-07 19:20:46,521 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:20:46,522 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:20:59,266 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:21:11,171 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:21:17,644 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:21:26,403 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:22:27,480 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:22:30,276 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:22:39,159 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476559.159894, 'user_massage': 'hello'} 
+2023-05-07 19:22:39,162 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:22:39,162 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:22:39,163 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 39150), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:23:12,727 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476592.7271655, 'user_massage': 'ffssfsf'} 
+2023-05-07 19:23:12,730 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:23:12,730 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:23:12,730 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 39152), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:23:18,855 INFO       client Работа клиента завершена 
+2023-05-07 19:23:50,310 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:23:51,311 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:23:54,743 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:23:55,744 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:23:56,749 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:24:35,575 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:24:37,624 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:24:46,718 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683476686.7180624, 'user_massage': 'fsfsfsfs'} 
+2023-05-07 19:24:46,720 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:24:46,721 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:24:46,721 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 34720), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:36:26,485 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:36:28,388 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:36:48,954 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683477408.9540396, 'user_massage': 'hello'} 
+2023-05-07 19:36:48,957 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:36:48,957 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:36:48,957 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 42268), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:37:28,961 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683477448.9614506, 'user_massage': 'hellolol'} 
+2023-05-07 19:37:28,964 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:37:28,964 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:37:28,964 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 42270), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:37:43,657 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 42268), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:37:43,658 INFO       client Работа клиента завершена 
+2023-05-07 19:43:46,944 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:43:47,945 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:43:58,431 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:43:59,432 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:45:40,388 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:45:44,817 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:46:04,473 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683477964.4735296, 'user_massage': 'hello'} 
+2023-05-07 19:46:04,476 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:46:04,476 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:46:04,476 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 53672), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:46:11,657 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683477971.6571763, 'user_massage': 'hello'} 
+2023-05-07 19:46:11,659 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:46:11,660 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:46:11,660 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 56248), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:46:24,201 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 53672), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:46:24,201 INFO       client Работа клиента завершена 
+2023-05-07 19:49:42,721 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:49:48,415 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 19:50:05,607 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683478205.6077366, 'user_massage': 'heeloo'} 
+2023-05-07 19:50:05,610 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:50:05,610 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:50:05,611 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 32938), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:50:17,047 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683478217.047461, 'user_massage': 'hello'} 
+2023-05-07 19:50:17,050 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:50:17,050 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:50:17,050 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 45130), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:50:26,095 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 32938), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:50:26,095 INFO       client Работа клиента завершена 
+2023-05-07 19:50:46,046 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683478246.046482, 'user_massage': 'hello'} 
+2023-05-07 19:50:46,046 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-07 19:50:46,047 INFO       client Сообщение отправленно серверу 
+2023-05-07 19:50:46,047 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 45130), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:51:23,701 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 45130), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 19:51:23,701 INFO       client Работа клиента завершена 
+2023-05-07 20:00:20,767 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:00:22,303 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:00:47,247 DEBUG      log_decorator Функция send_stop_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 32980), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 20:00:47,247 INFO       client Послан сигнал на отключение сервера 
+2023-05-07 20:02:50,896 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:02:56,270 DEBUG      log_decorator Функция send_stop_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 51610), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 20:02:56,270 INFO       client Послан сигнал на отключение сервера 
+2023-05-07 20:05:34,352 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:05:37,341 DEBUG      log_decorator Функция send_stop_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 38136), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 20:05:37,341 INFO       client Послан сигнал на отключение сервера 
+2023-05-07 20:08:38,041 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:08:56,204 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:09:06,752 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:09:16,489 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:09:17,491 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:09:18,492 INFO       sender_client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:10:37,508 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-07 20:10:39,660 DEBUG      log_decorator Функция send_stop_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 44382), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-07 20:10:39,660 INFO       client Послан сигнал на отключение сервера 
+2023-05-11 20:37:59,637 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-11 20:38:03,302 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-11 20:38:12,660 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683826692.6603577, 'user_massage': 'hello'} 
+2023-05-11 20:38:12,676 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-11 20:38:12,677 INFO       client Сообщение отправленно серверу 
+2023-05-11 20:38:12,677 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59646), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-11 20:38:33,967 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59646), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-11 20:38:33,967 INFO       client Работа клиента завершена 
+2023-05-11 20:38:51,444 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-11 20:39:01,937 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683826741.9372702, 'user_massage': 'hello'} 
+2023-05-11 20:39:01,943 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-11 20:39:01,943 INFO       client Сообщение отправленно серверу 
+2023-05-11 20:39:01,944 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 43820), raddr=('127.0.0.1', 7777)>,), {})из функции console 
+2023-05-11 20:39:15,393 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1683826755.3937895, 'user_massage': 'oh myyy'} 
+2023-05-11 20:39:15,394 DEBUG      log_decorator Функция create_massage вызванна с аргументами ((), {})из функции send_massage 
+2023-05-11 20:39:15,394 INFO       client Сообщение отправленно серверу 
+2023-05-11 20:39:15,395 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 43820), raddr=('127.0.0.1', 7777)>,), {})из функции console 

@@ -37,6 +37,7 @@ def main(ip_addr : str, ip_port : int):
             break
         except:
             print('Сервер недоступен')
+            time.sleep(1)
 
     while True:
         massage = input(f'Введите сообщение остальным клиентам от {clt_soc.fileno()}, {clt_soc.getpeername()}: ')

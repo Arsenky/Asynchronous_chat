@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from sys import argv, exit
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import time
 import json
 import logging
@@ -46,28 +46,27 @@ def process_massage(client: socket, massage: dict):
 
 
 def read_massage(r_clients, all_clients) -> dict:
-    """ Чтение запросов из списка клиентов """
     data = None
     for sock in r_clients:
-        try:
-            data = sock.recv(1024).decode('utf-8')
-        except OSError:
+        data = json.loads(sock.recv(1024).decode('utf-8'))
+        action = data['action']
+        if action == 'quit':
             all_clients.remove(sock)   
             print(f'Клиент {sock.getpeername()} отключился')
+            data = {}
+        elif action == 'massage':
+            pass
+        elif action == 'stop':
+            print('Получен сигнал на отключение сервера')
+            server_logger.warning('Получен сигнал на отключение сервера')
+            data = {'action' : 'stop'}
+            exit(0)
     return data
 
 def resend_massage(massage, w_clients, all_clients):
     for sock in w_clients:
-        try:
-            sock.send(massage.encode('utf-8'))
-        except OSError:
-            all_clients.remove(sock)   
-            print(f'Клиент {sock.getpeername()} отключился')
-
-        
-            
-
-
+        sock.send(json.dumps(massage).encode('utf-8'))
+    
 def main(ip_addr: str, ip_port: int):
     print('MY Server RUN ^^^ ', end='')
 
@@ -79,6 +78,7 @@ def main(ip_addr: str, ip_port: int):
     srv_soc.bind((ip_addr, ip_port))  # ( aдрес, порт )
     srv_soc.listen(5)  # одновременно обслуживает не более 5 запросов
     srv_soc.settimeout(0.5)
+    srv_soc.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) # для быстрого автовысвобождения порта
 
     while True:
         try:
@@ -96,9 +96,20 @@ def main(ip_addr: str, ip_port: int):
             r = []
             w = []
             r, w, e = select.select(clients, clients, [], wait)
+
+            # отладочные выводы
+            print('передающие сокеты:')
+            for sock in r:
+                print(sock.getpeername())
+            print('принимающие сокеты:')
+            for sock in w:
+                print(sock.getpeername())
+            print()
+
             if r:  
                 massage = read_massage(r, clients)  
-                
+                print(massage)
+
             # удаляем отправителей из списка получателей
             for sock in r:
                 w.remove(sock)
@@ -106,6 +117,7 @@ def main(ip_addr: str, ip_port: int):
             if massage:
                 resend_massage(massage, w, clients)
             
+            time.sleep(3)
 
 if __name__ == '__main__':
     if '-p' in argv:
