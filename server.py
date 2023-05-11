@@ -45,32 +45,32 @@ def process_massage(client: socket, massage: dict):
         exit(0)
 
 
-def read_massage(r_clients, all_clients) -> dict:
-    data = None
+def read_massages(r_clients, all_clients) -> list:
+    data = []
     for sock in r_clients:
-        data = json.loads(sock.recv(1024).decode('utf-8'))
-        action = data['action']
+        massage = json.loads(sock.recv(1024).decode('utf-8'))
+        action = massage['action']
         if action == 'quit':
-            all_clients.remove(sock)   
+            all_clients.pop(sock)   
             print(f'Клиент {sock.getpeername()} отключился')
-            data = {}
         elif action == 'massage':
-            pass
+            data.append(massage)
         elif action == 'stop':
             print('Получен сигнал на отключение сервера')
             server_logger.warning('Получен сигнал на отключение сервера')
-            data = {'action' : 'stop'}
             exit(0)
     return data
 
-def resend_massage(massage, w_clients, all_clients):
+def resend_massage(massages, w_clients, all_clients):
     for sock in w_clients:
-        sock.send(json.dumps(massage).encode('utf-8'))
+        for massage in massages:
+            if massage['reciever'] == all_clients[sock]:
+                sock.send(json.dumps(massage).encode('utf-8'))
     
 def main(ip_addr: str, ip_port: int):
     print('MY Server RUN ^^^ ', end='')
 
-    clients = []
+    clients = {}
 
     srv_connect = (str(ip_addr), int(ip_port))
     print(srv_connect)
@@ -86,16 +86,17 @@ def main(ip_addr: str, ip_port: int):
         except OSError as e:
             pass  # timeout вышел
         else:
+            presence_massage = json.loads(conn.recv(256).decode('utf-8'))
             print("Получен запрос на соединение от %s" % str(addr))
-            clients.append(conn)
+            clients[conn] = presence_massage['nick_name']
            
         finally:
             # Проверить наличие событий ввода-вывода
-            massage = None
+            massages = []
             wait = 3
             r = []
             w = []
-            r, w, e = select.select(clients, clients, [], wait)
+            r, w, e = select.select(clients.keys(), clients.keys(), [], wait)
 
             # отладочные выводы
             print('передающие сокеты:')
@@ -107,15 +108,15 @@ def main(ip_addr: str, ip_port: int):
             print()
 
             if r:  
-                massage = read_massage(r, clients)  
-                print(massage)
+                massages = read_massages(r, clients)  
+                print(massages)
 
             # удаляем отправителей из списка получателей
-            for sock in r:
-                w.remove(sock)
+            # for sock in r:
+            #     w.remove(sock)
 
-            if massage:
-                resend_massage(massage, w, clients)
+            if massages:
+                resend_massage(massages, w, clients)
             
             time.sleep(3)
 
