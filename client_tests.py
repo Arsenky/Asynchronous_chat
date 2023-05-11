@@ -1,7 +1,7 @@
 import unittest
 from socket import socket, AF_INET, SOCK_STREAM
 import time
-from client import create_presence_massage, send_presence_massage, receive_answer
+from client1 import create_presence_massage, send_presence_massage, receive_answer
 
 class TestClient(unittest.TestCase):
 

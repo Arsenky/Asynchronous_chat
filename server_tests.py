@@ -1,7 +1,7 @@
 import unittest
 from socket import socket, AF_INET, SOCK_STREAM
 from server import receive_massage
-from client import send_presence_massage, create_presence_massage
+from client1 import send_presence_massage, create_presence_massage
 import time
 
 

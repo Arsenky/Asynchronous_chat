@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from sys import argv, exit
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import time
 import json
 import logging
@@ -45,33 +45,32 @@ def process_massage(client: socket, massage: dict):
         exit(0)
 
 
-def read_massage(r_clients, all_clients) -> dict:
-    """ Чтение запросов из списка клиентов """
-    data = None
+def read_massages(r_clients, all_clients) -> list:
+    data = []
     for sock in r_clients:
-        try:
-            data = sock.recv(1024).decode('utf-8')
-        except OSError:
-            all_clients.remove(sock)   
+        massage = json.loads(sock.recv(1024).decode('utf-8'))
+        action = massage['action']
+        if action == 'quit':
+            all_clients.pop(sock)   
             print(f'Клиент {sock.getpeername()} отключился')
+        elif action == 'massage':
+            data.append(massage)
+        elif action == 'stop':
+            print('Получен сигнал на отключение сервера')
+            server_logger.warning('Получен сигнал на отключение сервера')
+            exit(0)
     return data
 
-def resend_massage(massage, w_clients, all_clients):
+def resend_massage(massages, w_clients, all_clients):
     for sock in w_clients:
-        try:
-            sock.send(massage.encode('utf-8'))
-        except OSError:
-            all_clients.remove(sock)   
-            print(f'Клиент {sock.getpeername()} отключился')
-
-        
-            
-
-
+        for massage in massages:
+            if massage['reciever'] == all_clients[sock]:
+                sock.send(json.dumps(massage).encode('utf-8'))
+    
 def main(ip_addr: str, ip_port: int):
     print('MY Server RUN ^^^ ', end='')
 
-    clients = []
+    clients = {}
 
     srv_connect = (str(ip_addr), int(ip_port))
     print(srv_connect)
@@ -79,6 +78,7 @@ def main(ip_addr: str, ip_port: int):
     srv_soc.bind((ip_addr, ip_port))  # ( aдрес, порт )
     srv_soc.listen(5)  # одновременно обслуживает не более 5 запросов
     srv_soc.settimeout(0.5)
+    srv_soc.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) # для быстрого автовысвобождения порта
 
     while True:
         try:
@@ -86,26 +86,39 @@ def main(ip_addr: str, ip_port: int):
         except OSError as e:
             pass  # timeout вышел
         else:
+            presence_massage = json.loads(conn.recv(256).decode('utf-8'))
             print("Получен запрос на соединение от %s" % str(addr))
-            clients.append(conn)
+            clients[conn] = presence_massage['nick_name']
            
         finally:
             # Проверить наличие событий ввода-вывода
-            massage = None
+            massages = []
             wait = 3
             r = []
             w = []
-            r, w, e = select.select(clients, clients, [], wait)
-            if r:  
-                massage = read_massage(r, clients)  
-                
-            # удаляем отправителей из списка получателей
-            for sock in r:
-                w.remove(sock)
+            r, w, e = select.select(clients.keys(), clients.keys(), [], wait)
 
-            if massage:
-                resend_massage(massage, w, clients)
+            # отладочные выводы
+            print('передающие сокеты:')
+            for sock in r:
+                print(sock.getpeername())
+            print('принимающие сокеты:')
+            for sock in w:
+                print(sock.getpeername())
+            print()
+
+            if r:  
+                massages = read_massages(r, clients)  
+                print(massages)
+
+            # удаляем отправителей из списка получателей
+            # for sock in r:
+            #     w.remove(sock)
+
+            if massages:
+                resend_massage(massages, w, clients)
             
+            time.sleep(3)
 
 if __name__ == '__main__':
     if '-p' in argv:
