@@ -248,3 +248,8 @@
 2023-05-11 22:03:54,965 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 34590), raddr=('127.0.0.1', 7777)>, 'Val'), {})из функции console 
 2023-05-11 22:04:10,123 DEBUG      log_decorator Функция send_stop_signal вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 34590), raddr=('127.0.0.1', 7777)>,), {})из функции console 
 2023-05-11 22:04:10,123 INFO       client Послан сигнал на отключение сервера 
+2023-05-13 17:59:03,806 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-13 17:59:03,836 INFO       client Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1683989943.8360326, 'nick_name': 'ars'} 
+2023-05-13 17:59:03,838 DEBUG      log_decorator Функция create_presence_massage вызванна с аргументами (('ars',), {})из функции send_presence_massage 
+2023-05-13 17:59:03,838 INFO       client Сообщение о присутствии отправленно серверу 
+2023-05-13 17:59:03,838 DEBUG      log_decorator Функция send_presence_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 40622), raddr=('127.0.0.1', 7777)>, 'ars'), {})из функции main 
