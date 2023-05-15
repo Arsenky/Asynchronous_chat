@@ -47,7 +47,6 @@ def receive_massage(clt_soc : socket):
     while True:
         try:
             massage = json.loads(clt_soc.recv(256).decode('utf-8'))
-            # client_logger.info(f'Ответ от серевера: {massage["response"]}, {massage["alert"]}')
         except:
             print('Сервер недоступен')
             time.sleep(1)
