@@ -118,7 +118,7 @@ def main(ip_addr: str, ip_port: int):
             if massages:
                 resend_massage(massages, w, clients)
             
-            time.sleep(3)
+            # time.sleep(0.1)
 
 if __name__ == '__main__':
     if '-p' in argv:
