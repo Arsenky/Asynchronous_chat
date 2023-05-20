@@ -368,3 +368,45 @@
 2023-05-15 19:28:54,831 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=6, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 58202), raddr=('127.0.0.1', 7777)>, 'Client1'), {})из функции console 
 2023-05-15 19:28:54,833 DEBUG      log_decorator Функция send_quit_signal вызванна с аргументами ((<socket.socket fd=6, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 58202), raddr=('127.0.0.1', 7777)>,), {})из функции console 
 2023-05-15 19:28:54,834 INFO       client Работа клиента завершена 
+2023-05-20 15:25:15,418 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:25:15,450 INFO       client Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684585515.449926, 'nick_name': 'Ars'} 
+2023-05-20 15:25:15,455 DEBUG      log_decorator Функция create_presence_massage вызванна с аргументами (('Ars',), {})из функции send_presence_massage 
+2023-05-20 15:25:15,456 INFO       client Сообщение о присутствии отправленно серверу 
+2023-05-20 15:25:15,457 DEBUG      log_decorator Функция send_presence_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 48062), raddr=('127.0.0.1', 7777)>, 'Ars'), {})из функции main 
+2023-05-20 15:25:36,274 INFO       client Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:25:36,276 INFO       client Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684585536.2759547, 'nick_name': 'Val'} 
+2023-05-20 15:25:36,281 DEBUG      log_decorator Функция create_presence_massage вызванна с аргументами (('Val',), {})из функции send_presence_massage 
+2023-05-20 15:25:36,281 INFO       client Сообщение о присутствии отправленно серверу 
+2023-05-20 15:25:36,282 DEBUG      log_decorator Функция send_presence_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 43162), raddr=('127.0.0.1', 7777)>, 'Val'), {})из функции main 
+2023-05-20 15:25:50,074 INFO       client Сформированно сообщение серверу: {'action': 'massage', 'time': 1684585550.0746768, 'sender': 'Ars', 'reciever': 'Val', 'user_massage': 'hello'} 
+2023-05-20 15:25:50,076 DEBUG      log_decorator Функция create_massage вызванна с аргументами (('Ars',), {})из функции send_massage 
+2023-05-20 15:25:50,076 INFO       client Сообщение отправленно серверу 
+2023-05-20 15:25:50,076 DEBUG      log_decorator Функция send_massage вызванна с аргументами ((<socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 48062), raddr=('127.0.0.1', 7777)>, 'Ars'), {})из функции console 
+2023-05-20 15:28:30,657 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:28:44,193 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:30:06,416 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:30:17,240 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:33:11,568 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:39:53,238 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:40:57,926 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:41:37,412 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:41:37,413 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586497.4131489, 'nick_name': 'Ars'} 
+2023-05-20 15:41:37,419 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:43:47,147 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:43:53,916 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:43:53,917 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586633.9174683, 'nick_name': 'Ars'} 
+2023-05-20 15:43:53,923 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:44:21,292 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:44:21,293 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586661.2933202, 'nick_name': 'Val'} 
+2023-05-20 15:44:21,298 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:46:09,858 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:46:09,859 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586769.859724, 'nick_name': 'Ars'} 
+2023-05-20 15:46:09,865 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:47:46,681 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:47:46,682 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586866.6826496, 'nick_name': 'Ars'} 
+2023-05-20 15:47:46,688 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:47:58,569 INFO       client_class Клиент стартовал ('localhost', 7777) 
+2023-05-20 15:47:58,570 INFO       client_class Сформированно сообщение о присутствии серверу: {'action': 'presence', 'time': 1684586878.5704918, 'nick_name': 'Val'} 
+2023-05-20 15:47:58,576 INFO       client_class Сообщение о присутствии отправленно серверу 
+2023-05-20 15:48:02,377 INFO       client_class Сформированно сообщение серверу: {'action': 'massage', 'time': 1684586882.3779173, 'sender': 'Ars', 'reciever': 'Val', 'user_massage': 'hello'} 
+2023-05-20 15:48:02,379 INFO       client_class Сообщение отправленно серверу 
