@@ -8,11 +8,12 @@ import logging
 import log.client_log_config, log.server_log_config
 from log.log_decorator import log
 import threading
+from metaclasses import ClientVerifier
 
 client_logger = logging.getLogger('client')
 
-class Client():
-
+class Client(metaclass = ClientVerifier):
+    
     def __init__(self, ip_addr, ip_port) -> None:
         self.ip_addr = ip_addr
         self.ip_port = ip_port
@@ -96,7 +97,6 @@ class Client():
             client_logger.info(f'Клиент стартовал {clt_connect}')
 
             self.clt_soc = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
-
             # посылаем запрос на соединение
             self.clt_soc.connect((str(self.ip_addr), int(self.ip_port)))
         except:
@@ -120,23 +120,4 @@ class Client():
 if __name__ == '__main__':
     Client1 = Client('localhost', 7777)
     Client1.start()
-    # if __name__ == '__main__':
-    #     #    try:
-    #     if len(argv) > 1:
-    #         mip_addr = argv[1]
-    #         # print('ipa = ', mip_addr)
-    #         if len(argv) > 2:
-    #             mip_port = int(argv[2])
-    #             # print('ipp = ', mip_port)
-                
-    #         else:
-    #             mip_port = 7777
-    #             # print('ipp = ', mip_port)
-
-    #         main(mip_addr, mip_port)
-    #     else:
-    #         print('недопустимые параметры >>>python client.py <addr> [<port>]')
-    #         exit(1)
-
-    #    except Exception as e:
-    #        print(e)
+   
