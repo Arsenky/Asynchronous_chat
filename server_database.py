@@ -1,52 +1,78 @@
 from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import mapper, registry, declarative_base, Session
+from datetime import datetime
 
 print("Версия SQLAlchemy:", __version__)
+class ServerDataBase():
 
-engine = create_engine('sqlite:///server_db.db3', echo=False, pool_recycle = 7200)
+    db_engine = create_engine('sqlite:///server_db.db3', echo=False, pool_recycle = 7200)
+    Base = declarative_base()
+    
+    session = Session(autoflush=False, bind=db_engine)
+        
+    class User(Base):
 
-Base = declarative_base()
+        __tablename__ = 'users'
+        id = Column(Integer, primary_key=True) 
+        login = Column(String, unique = True)
+        info = Column(String, default = 'Пусто')
 
-class User(Base):
+        def __init__(self, login): 
+            self.login = login
+        
 
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True) 
-    login = Column(String)
-    info = Column(String)
+    class Contacts_list(Base):
 
-    def __init__(self, login): 
-        self.login = login
+        __tablename__ = 'contacts_list'
+        id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+        contact_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
 
-class Contacts_list(Base):
+        def __init__(self, id, contact_id): 
+            self.id =id
+            self.contact_id = contact_id
 
-    __tablename__ = 'contacts_list'
-    id = Column(Integer, ForeignKey('users.id'), primary_key=True)
-    contact_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    class Users_history(Base):
 
-    def __init__(self, id, contact_id): 
-        self.id =id
-        self.contact_id = contact_id
+        __tablename__ = 'users_history'
+        id = Column(Integer, ForeignKey('users.id'), primary_key=True) 
+        connection_time = Column(DateTime, default = datetime.now())
+        ip = Column(String)
 
-class Users_history(Base):
+        def __init__(self, id, ip): 
+                self.id = id
+                self.ip = ip
+                
+    Base.metadata.create_all(bind=db_engine)
 
-    __tablename__ = 'users_history'
-    id = Column(Integer, ForeignKey('users.id'), primary_key=True) 
-    connection_time = Column(DateTime)
-    ip = Column(String)
+    def add_user(self, login):
+        try:
+            user = self.User(login)
+            self.session.add(user)
+            self.session.commit()
+        except:
+            self.session.rollback()
+            
 
-    def __init__(self, id, ip): 
-            self.id = id
-            self.ip = ip
+    def history(self, id, ip):
+        try:
+            history_line = self.Users_history(id, ip)
+            self.session.add(history_line)
+            self.session.commit()
+        except:
+            self.session.rollback()
 
-Base.metadata.create_all(bind=engine)
+    
+    def get_id_by_login(self, log):
+        return self.session.query(self.User).filter_by(login=log).first().id
+        
+
 
 # отладка
-with Session(autoflush=False, bind=engine) as db:
-    user1 = User('Ars')
-    user2 = User('Val')
-    db.add(user1)
-    db.add(user2)    
-    db.commit()    
-    print(user1.id)
-    print(user2.id)
-
+if __name__ == '__main__':
+    db = ServerDataBase()
+   # db.add_user('Ars')
+   # db.add_user('Aur')
+    # db.session.commit()
+    x = db.session.query(db.User).filter_by(login="Val").first().id
+    print(db.get_id_by_login('Aur'))
+    print(db.get_id_by_login('Val'))

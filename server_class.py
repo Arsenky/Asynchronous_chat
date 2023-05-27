@@ -10,6 +10,7 @@ import log.server_log_config
 from log.log_decorator import log
 import select
 from metaclasses import ServerVerifier
+from server_database import ServerDataBase
 
 server_logger = logging.getLogger('server')
 
@@ -60,6 +61,9 @@ class Server(metaclass = ServerVerifier):
                     sock.send(json.dumps(massage).encode('utf-8'))
         
     def start(self):
+
+        db = ServerDataBase()
+
         print('MY Server RUN ^^^ ', end='')
 
         self.clients = {}
@@ -81,6 +85,14 @@ class Server(metaclass = ServerVerifier):
                 presence_massage = json.loads(conn.recv(256).decode('utf-8'))
                 print("Получен запрос на соединение от %s" % str(addr))
                 self.clients[conn] = presence_massage['nick_name']
+
+                db.add_user(presence_massage['nick_name'])
+                db.history(
+                    db.get_id_by_login(presence_massage['nick_name']),
+                    conn.getpeername()[0]
+                )
+
+                
             
             finally:
                 # Проверить наличие событий ввода-вывода
