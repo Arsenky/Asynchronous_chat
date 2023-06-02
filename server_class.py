@@ -38,10 +38,10 @@ class Server(metaclass = ServerVerifier):
 
 
     def read_massages(self) -> list:
-
         data = []
         for sock in self.r:
             massage = json.loads(sock.recv(1024).decode('utf-8'))
+            # print(f'{massage}-------')
             action = massage['action']
             if action == 'quit':
                 self.clients.pop(sock)   
@@ -52,6 +52,13 @@ class Server(metaclass = ServerVerifier):
                 print('Получен сигнал на отключение сервера')
                 server_logger.warning('Получен сигнал на отключение сервера')
                 exit(0)
+            elif action == 'get_contacts':
+                data.append(self.get_contacts(massage))
+            elif action == 'add_contact':
+                self.db.add_contact(massage['user_login'], massage['login_for_add'])
+            elif action == 'del_contact':
+                self.db.del_contact(massage['user_login'], massage['login_for_del'])
+          
         return data
 
     def resend_massage(self):
@@ -59,10 +66,19 @@ class Server(metaclass = ServerVerifier):
             for massage in self.massages:
                 if massage['reciever'] == self.clients[sock]:
                     sock.send(json.dumps(massage).encode('utf-8'))
+
+    def get_contacts(self, massage : dict) -> dict:
+        contacts_id_list = self.db.session.query(self.db.Contacts_list).filter_by(id=self.db.get_id_by_login(massage['user_login'])).all()
+        contacts_nick_list = []
+        for i in contacts_id_list:
+            contacts_nick_list.append(self.db.session.query(self.db.User).filter_by(id=i.contact_id).first().login)
+        contacts = {'action': 'get_contacts', 'response' : '202', "reciever" : massage['user_login'], 'alert' : contacts_nick_list}
+        return contacts
+            
         
     def start(self):
 
-        db = ServerDataBase()
+        self.db = ServerDataBase()
 
         print('MY Server RUN ^^^ ', end='')
 
@@ -83,12 +99,17 @@ class Server(metaclass = ServerVerifier):
                 pass  # timeout вышел
             else:
                 presence_massage = json.loads(conn.recv(256).decode('utf-8'))
+                conn.send(('xxx').encode('utf-8'))
                 print("Получен запрос на соединение от %s" % str(addr))
                 self.clients[conn] = presence_massage['nick_name']
+                
+                # добавление подключившегося клиента в список пользователей,
+                # в теле функции предусмотренно если клиент не новый
+                self.db.add_user(presence_massage['nick_name'])
 
-                db.add_user(presence_massage['nick_name'])
-                db.history(
-                    db.get_id_by_login(presence_massage['nick_name']),
+                #запись в историю при подключении
+                self.db.history(
+                    self.db.get_id_by_login(presence_massage['nick_name']),
                     conn.getpeername()[0]
                 )
 
@@ -97,7 +118,7 @@ class Server(metaclass = ServerVerifier):
             finally:
                 # Проверить наличие событий ввода-вывода
                 self.massages = []
-                wait = 3
+                wait = 0.1
                 self.r = []
                 self.w = []
                 self.r, self.w, e = select.select(self.clients.keys(), self.clients.keys(), [], wait)

@@ -51,8 +51,27 @@ class ServerDataBase():
             self.session.commit()
         except:
             self.session.rollback()
-            
 
+    def add_contact(self, client_login, contact_login):
+        try:
+            contact = self.Contacts_list(self.get_id_by_login(client_login), self.get_id_by_login(contact_login))
+            self.session.add(contact)
+            self.session.commit()
+        except:
+            self.session.rollback()
+    
+    def del_contact(self, client_login, contact_login):
+        try:
+            instanse = self.session.query(self.Contacts_list).filter_by(
+                id = self.get_id_by_login(client_login), 
+                contact_id = self.get_id_by_login(contact_login)
+                ).first()
+            self.session.delete(instanse)
+            self.session.commit()
+        except:
+            self.session.rollback()
+        
+    
     def history(self, id, ip):
         try:
             history_line = self.Users_history(id, ip)
@@ -65,6 +84,7 @@ class ServerDataBase():
     def get_id_by_login(self, log):
         return self.session.query(self.User).filter_by(login=log).first().id
         
+
 
 
 # отладка

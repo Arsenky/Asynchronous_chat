@@ -34,6 +34,10 @@ class Client(metaclass = ClientVerifier):
                 self.send_stop_signal()
                 print('Послан сигнал на отключение сервера')
                 client_logger.info('Послан сигнал на отключение сервера')
+            elif command == 'add_contact':
+                self.add_contact()
+            elif command == 'del_contact':
+                self.del_contact()
             else:
                 print('Неизвестная команда')
 
@@ -58,7 +62,10 @@ class Client(metaclass = ClientVerifier):
                 print('Сервер недоступен')
                 time.sleep(1)
             else:
-                print(f"\nПринято сообщение : {massage['user_massage']}")
+                if massage['action'] == 'massage':
+                    print(f"\nПринято сообщение : {massage['user_massage']}")
+                if massage['action'] == 'get_contacts':
+                    print(f"                             Ваши контакты: {massage['alert']}")
                 
 
     # функция отправки сигнала серверу об отключении клиента
@@ -89,6 +96,34 @@ class Client(metaclass = ClientVerifier):
             self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
             client_logger.info('Сообщение отправленно серверу')
 
+    def get_contacts(self):
+        massage = {
+            "action": "get_contacts",
+            "time": time.time(),
+            "user_login": self.nick_name
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+
+    def add_contact(self):
+        login_for_add = input('Введите логин добавляемого в контакты пользователя: ')
+        massage = {
+            "action": "add_contact",
+            "time": time.time(),
+            "user_login": self.nick_name,
+            'login_for_add' : login_for_add
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+        
+    def del_contact(self):
+        login_for_del = input('Введите логин удаляемого из контактов пользователя: ')
+        massage = {
+            "action": "del_contact",
+            "time": time.time(),
+            "user_login": self.nick_name,
+            'login_for_del' : login_for_del
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+
 
     def start(self):
         self.nick_name = input('Ведите свой никнейм: ')
@@ -104,6 +139,8 @@ class Client(metaclass = ClientVerifier):
             exit(1)
         else:
             self.send_presence_massage()
+            self.clt_soc.recv(256)
+            self.get_contacts()
 
         user_console = threading.Thread(target=self.console, args=())
         user_console.daemon = True
