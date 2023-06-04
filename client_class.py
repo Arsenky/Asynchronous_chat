@@ -1,5 +1,10 @@
 # -*- coding: UTF-8 -*-
-
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QWidget
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QThread
+from client_form import Ui_MainWindow
+import sys
 from sys import argv, exit
 from socket import socket, AF_INET, SOCK_STREAM
 import time
@@ -9,6 +14,7 @@ import log.client_log_config, log.server_log_config
 from log.log_decorator import log
 import threading
 from metaclasses import ClientVerifier
+from client_database import ClientDataBase
 
 client_logger = logging.getLogger('client')
 
@@ -64,6 +70,7 @@ class Client(metaclass = ClientVerifier):
             else:
                 if massage['action'] == 'massage':
                     print(f"\nПринято сообщение : {massage['user_massage']}")
+                    self.db.history(massage['sender'], massage['user_massage'])
                 if massage['action'] == 'get_contacts':
                     print(f"                             Ваши контакты: {massage['alert']}")
                 
@@ -126,12 +133,14 @@ class Client(metaclass = ClientVerifier):
 
 
     def start(self):
+        self.db = ClientDataBase()
         self.nick_name = input('Ведите свой никнейм: ')
         try:
             clt_connect = (self.ip_addr, self.ip_port)
             client_logger.info(f'Клиент стартовал {clt_connect}')
 
             self.clt_soc = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
+            
             # посылаем запрос на соединение
             self.clt_soc.connect((str(self.ip_addr), int(self.ip_port)))
         except:
@@ -139,8 +148,11 @@ class Client(metaclass = ClientVerifier):
             exit(1)
         else:
             self.send_presence_massage()
-            self.clt_soc.recv(256)
+            presence_answer = json.loads(self.clt_soc.recv(256).decode('utf-8'))
+            if presence_answer['alert'] == '200':
+                print('Успешное подключение к серверу')
             self.get_contacts()
+   
 
         user_console = threading.Thread(target=self.console, args=())
         user_console.daemon = True
@@ -151,10 +163,24 @@ class Client(metaclass = ClientVerifier):
         receiver.daemon = True
         receiver.start()
 
-        user_console.join()
+        # user_console.join()
 
+        
+def clicked():
+    Client1 = Client('localhost', 7777)
+    Client1.start() 
 
 if __name__ == '__main__':
-    Client1 = Client('localhost', 7777)
-    Client1.start()
+
+    app = QtWidgets.QApplication(sys.argv) 
+
+    window = QMainWindow() 
+    ui = Ui_MainWindow() 
+    ui.setupUi(window)
+
+   # ui.pushButton.clicked.connect(clicked)
+    window.show() 
+    sys.exit(app.exec_())
+
+   
    

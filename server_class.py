@@ -41,7 +41,6 @@ class Server(metaclass = ServerVerifier):
         data = []
         for sock in self.r:
             massage = json.loads(sock.recv(1024).decode('utf-8'))
-            # print(f'{massage}-------')
             action = massage['action']
             if action == 'quit':
                 self.clients.pop(sock)   
@@ -99,7 +98,7 @@ class Server(metaclass = ServerVerifier):
                 pass  # timeout вышел
             else:
                 presence_massage = json.loads(conn.recv(256).decode('utf-8'))
-                conn.send(('xxx').encode('utf-8'))
+                conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '200'}).encode('utf-8'))
                 print("Получен запрос на соединение от %s" % str(addr))
                 self.clients[conn] = presence_massage['nick_name']
                 
@@ -114,11 +113,10 @@ class Server(metaclass = ServerVerifier):
                 )
 
                 
-            
             finally:
                 # Проверить наличие событий ввода-вывода
                 self.massages = []
-                wait = 0.1
+                wait = 3
                 self.r = []
                 self.w = []
                 self.r, self.w, e = select.select(self.clients.keys(), self.clients.keys(), [], wait)
