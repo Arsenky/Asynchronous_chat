@@ -1,5 +1,10 @@
 # -*- coding: UTF-8 -*-
-
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QWidget
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QThread
+from client_form import Ui_MainWindow
+import sys
 from sys import argv, exit
 from socket import socket, AF_INET, SOCK_STREAM
 import time
@@ -9,6 +14,7 @@ import log.client_log_config, log.server_log_config
 from log.log_decorator import log
 import threading
 from metaclasses import ClientVerifier
+from client_database import ClientDataBase
 
 client_logger = logging.getLogger('client')
 
@@ -34,6 +40,10 @@ class Client(metaclass = ClientVerifier):
                 self.send_stop_signal()
                 print('Послан сигнал на отключение сервера')
                 client_logger.info('Послан сигнал на отключение сервера')
+            elif command == 'add_contact':
+                self.add_contact()
+            elif command == 'del_contact':
+                self.del_contact()
             else:
                 print('Неизвестная команда')
 
@@ -58,7 +68,11 @@ class Client(metaclass = ClientVerifier):
                 print('Сервер недоступен')
                 time.sleep(1)
             else:
-                print(f"\nПринято сообщение : {massage['user_massage']}")
+                if massage['action'] == 'massage':
+                    print(f"\nПринято сообщение : {massage['user_massage']}")
+                    self.db.history(massage['sender'], massage['user_massage'])
+                if massage['action'] == 'get_contacts':
+                    print(f"                             Ваши контакты: {massage['alert']}")
                 
 
     # функция отправки сигнала серверу об отключении клиента
@@ -89,14 +103,44 @@ class Client(metaclass = ClientVerifier):
             self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
             client_logger.info('Сообщение отправленно серверу')
 
+    def get_contacts(self):
+        massage = {
+            "action": "get_contacts",
+            "time": time.time(),
+            "user_login": self.nick_name
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+
+    def add_contact(self):
+        login_for_add = input('Введите логин добавляемого в контакты пользователя: ')
+        massage = {
+            "action": "add_contact",
+            "time": time.time(),
+            "user_login": self.nick_name,
+            'login_for_add' : login_for_add
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+        
+    def del_contact(self):
+        login_for_del = input('Введите логин удаляемого из контактов пользователя: ')
+        massage = {
+            "action": "del_contact",
+            "time": time.time(),
+            "user_login": self.nick_name,
+            'login_for_del' : login_for_del
+            }
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+
 
     def start(self):
+        self.db = ClientDataBase()
         self.nick_name = input('Ведите свой никнейм: ')
         try:
             clt_connect = (self.ip_addr, self.ip_port)
             client_logger.info(f'Клиент стартовал {clt_connect}')
 
             self.clt_soc = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
+            
             # посылаем запрос на соединение
             self.clt_soc.connect((str(self.ip_addr), int(self.ip_port)))
         except:
@@ -104,6 +148,11 @@ class Client(metaclass = ClientVerifier):
             exit(1)
         else:
             self.send_presence_massage()
+            presence_answer = json.loads(self.clt_soc.recv(256).decode('utf-8'))
+            if presence_answer['alert'] == '200':
+                print('Успешное подключение к серверу')
+            self.get_contacts()
+   
 
         user_console = threading.Thread(target=self.console, args=())
         user_console.daemon = True
@@ -114,10 +163,24 @@ class Client(metaclass = ClientVerifier):
         receiver.daemon = True
         receiver.start()
 
-        user_console.join()
+        # user_console.join()
 
+        
+def clicked():
+    Client1 = Client('localhost', 7777)
+    Client1.start() 
 
 if __name__ == '__main__':
-    Client1 = Client('localhost', 7777)
-    Client1.start()
+
+    app = QtWidgets.QApplication(sys.argv) 
+
+    window = QMainWindow() 
+    ui = Ui_MainWindow() 
+    ui.setupUi(window)
+
+   # ui.pushButton.clicked.connect(clicked)
+    window.show() 
+    sys.exit(app.exec_())
+
+   
    
