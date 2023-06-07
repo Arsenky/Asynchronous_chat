@@ -24,18 +24,18 @@ class ClientDataBase():
         __tablename__ = 'massages_history'
         id = Column(Integer, primary_key=True) 
         time = Column(DateTime, default = datetime.now())
-        reciever = Column(String)
+        sender = Column(String)
         text = Column(String)
 
         def __init__(self, sender, text): 
-                self.reciever = sender
+                self.sender = sender
                 self.text = text
                 
     Base.metadata.create_all(bind=db_engine)
 
-    def history(self, id, ip):
+    def history(self, sender, text):
         try:
-            history_line = self.Massages_history(id, ip)
+            history_line = self.Massages_history(sender, text)
             self.session.add(history_line)
             self.session.commit()
         except:

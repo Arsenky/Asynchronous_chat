@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QThread
@@ -23,6 +23,8 @@ class Client(metaclass = ClientVerifier):
     def __init__(self, ip_addr, ip_port) -> None:
         self.ip_addr = ip_addr
         self.ip_port = ip_port
+        self.nick_name = ''
+        self.clt_soc = None
 
     @log
     def console(self):
@@ -71,8 +73,11 @@ class Client(metaclass = ClientVerifier):
                 if massage['action'] == 'massage':
                     print(f"\nПринято сообщение : {massage['user_massage']}")
                     self.db.history(massage['sender'], massage['user_massage'])
+                    ui.chat.cursorForPosition(QtCore.QPoint(1, 2))
+                    ui.chat.append(f"{massage['sender']}: {massage['user_massage']}")
                 if massage['action'] == 'get_contacts':
-                    print(f"                             Ваши контакты: {massage['alert']}")
+                    self.contact_list = massage['alert']
+                    
                 
 
     # функция отправки сигнала серверу об отключении клиента
@@ -87,21 +92,23 @@ class Client(metaclass = ClientVerifier):
         signal = { "action": "stop", "time": time.time()}
         self.clt_soc.send((json.dumps(signal)).encode('utf-8'))
 
+    def send_massage(self, reciever, text):
+        massage = { "action" : "massage", "time" : time.time(), "sender": self.nick_name, "reciever" : reciever, "user_massage" : text}
+        self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
 
+    # @log
+    # def create_massage(self) -> dict:
+    #         user_massage = input('Введите сообщение: ')
+    #         reciever = input('Введите никнейп получателя: ')
+    #         massage = { "action" : "massage", "time" : time.time(), "sender": self.nick_name, "reciever" : reciever, "user_massage" : user_massage}
+    #         client_logger.info(f'Сформированно сообщение серверу: {massage}')
+    #         return massage
 
-    @log
-    def create_massage(self) -> dict:
-            user_massage = input('Введите сообщение: ')
-            reciever = input('Введите никнейп получателя: ')
-            massage = { "action" : "massage", "time" : time.time(), "sender": self.nick_name, "reciever" : reciever, "user_massage" : user_massage}
-            client_logger.info(f'Сформированно сообщение серверу: {massage}')
-            return massage
-
-    @log     
-    def send_massage(self):
-            massage = self.create_massage()
-            self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
-            client_logger.info('Сообщение отправленно серверу')
+    # @log     
+    # def send_massage(self):
+    #         massage = self.create_massage()
+    #         self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
+    #         client_logger.info('Сообщение отправленно серверу')
 
     def get_contacts(self):
         massage = {
@@ -125,22 +132,22 @@ class Client(metaclass = ClientVerifier):
         login_for_del = input('Введите логин удаляемого из контактов пользователя: ')
         massage = {
             "action": "del_contact",
-            "time": time.time(),
-            "user_login": self.nick_name,
             'login_for_del' : login_for_del
             }
         self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
 
 
     def start(self):
+        self.nick_name = ui.nick_lineEdit.text()
+        self.contact_list = []
         self.db = ClientDataBase()
-        self.nick_name = input('Ведите свой никнейм: ')
+        # self.nick_name = input('Ведите свой никнейм: ')
         try:
             clt_connect = (self.ip_addr, self.ip_port)
             client_logger.info(f'Клиент стартовал {clt_connect}')
 
             self.clt_soc = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
-            
+
             # посылаем запрос на соединение
             self.clt_soc.connect((str(self.ip_addr), int(self.ip_port)))
         except:
@@ -165,12 +172,33 @@ class Client(metaclass = ClientVerifier):
 
         # user_console.join()
 
-        
-def clicked():
-    Client1 = Client('localhost', 7777)
-    Client1.start() 
+
+
+
+def start():
+    ui.startbutton.hide()
+    ui.nick_lineEdit.hide()
+    Client1.start()
+    ui.start_nick_label.setText(f'Ваш ник: {Client1.nick_name}')
+
+    while Client1.contact_list == []:
+        time.sleep(0.1)
+    else:
+        for contact in Client1.contact_list:
+            ui.contacts_list.addItem(f'{contact}')
+
+def massage():
+    Client1.send_massage(ui.reciever.text(), ui.massage_text.toPlainText())
+
+def chat_switched():
+    ui.chat_window.clear()
+    chat = Client1.db.session.query(Client1.db.Massages_history).filter_by(sender = ui.contacts_list.currentItem().text()).all()
+    for msg in chat:
+        ui.chat_window.cursorForPosition(QtCore.QPoint(1, 2))
+        ui.chat_window.append(f"{msg.sender}: {msg.text}")
 
 if __name__ == '__main__':
+    Client1 = Client('localhost', 7777)
 
     app = QtWidgets.QApplication(sys.argv) 
 
@@ -178,9 +206,12 @@ if __name__ == '__main__':
     ui = Ui_MainWindow() 
     ui.setupUi(window)
 
-   # ui.pushButton.clicked.connect(clicked)
+    ui.startbutton.clicked.connect(start)
+    ui.sendbutton.clicked.connect(massage)
+    ui.contacts_list.doubleClicked.connect(chat_switched)
     window.show() 
     sys.exit(app.exec_())
+     
 
    
    
