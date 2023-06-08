@@ -15,9 +15,8 @@ class ClientDataBase():
         __tablename__ = 'contacts_list'
         login = Column(Integer, primary_key=True)
 
-        def __init__(self, id, contact_id): 
-            self.id =id
-            self.contact_id = contact_id
+        def __init__(self, login): 
+            self.login = login
 
     class Massages_history(Base):
 
@@ -42,5 +41,12 @@ class ClientDataBase():
             self.session.rollback()
 
         
+    def add_contact(self, nick):
+        try:
+            new_cont = self.Contacts_list(nick)
+            self.session.add(new_cont)
+            self.session.commit()
+        except:
+            self.session.rollback()
 
 

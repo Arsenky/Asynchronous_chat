@@ -96,20 +96,6 @@ class Client(metaclass = ClientVerifier):
         massage = { "action" : "massage", "time" : time.time(), "sender": self.nick_name, "reciever" : reciever, "user_massage" : text}
         self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
 
-    # @log
-    # def create_massage(self) -> dict:
-    #         user_massage = input('Введите сообщение: ')
-    #         reciever = input('Введите никнейп получателя: ')
-    #         massage = { "action" : "massage", "time" : time.time(), "sender": self.nick_name, "reciever" : reciever, "user_massage" : user_massage}
-    #         client_logger.info(f'Сформированно сообщение серверу: {massage}')
-    #         return massage
-
-    # @log     
-    # def send_massage(self):
-    #         massage = self.create_massage()
-    #         self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
-    #         client_logger.info('Сообщение отправленно серверу')
-
     def get_contacts(self):
         massage = {
             "action": "get_contacts",
@@ -173,7 +159,9 @@ class Client(metaclass = ClientVerifier):
         # user_console.join()
 
 
-
+def add_local_contact():
+    ui.contacts_list.addItem(f'{ui.add_contact_lineEdit.text()}')
+    Client1.db.add_contact(ui.add_contact_lineEdit.text())
 
 def start():
     ui.startbutton.hide()
@@ -209,6 +197,7 @@ if __name__ == '__main__':
     ui.startbutton.clicked.connect(start)
     ui.sendbutton.clicked.connect(massage)
     ui.contacts_list.doubleClicked.connect(chat_switched)
+    ui.add_contact_button.clicked.connect(add_local_contact)
     window.show() 
     sys.exit(app.exec_())
      
