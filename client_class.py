@@ -51,8 +51,8 @@ class Client(metaclass = ClientVerifier):
 
     @log
     def create_presence_massage(self) -> dict:
-            connection_massage = { "action" : "presence", "time": time.time(), "nick_name" : self.nick_name} 
-            client_logger.info(f'Сформированно сообщение о присутствии серверу: {connection_massage}')
+            connection_massage = { "action" : "presence", "time": time.time(), "nick_name" : self.nick_name, "password" : self.password} 
+            client_logger.info(f'Сформированно сообщение о присутствии серверу')
             return connection_massage
 
     @log     
@@ -73,11 +73,10 @@ class Client(metaclass = ClientVerifier):
                 if massage['action'] == 'massage':
                     print(f"\nПринято сообщение : {massage['user_massage']}")
                     self.db.history(massage['sender'], massage['user_massage'])
-                    ui.chat.cursorForPosition(QtCore.QPoint(1, 2))
-                    ui.chat.append(f"{massage['sender']}: {massage['user_massage']}")
-                if massage['action'] == 'get_contacts':
+                    ui.chat_window.cursorForPosition(QtCore.QPoint(1, 2))
+                    ui.chat_window.append(f"{massage['sender']}: {massage['user_massage']}")
+                elif massage['action'] == 'get_contacts':
                     self.contact_list = massage['alert']
-                    
                 
 
     # функция отправки сигнала серверу об отключении клиента
@@ -85,6 +84,7 @@ class Client(metaclass = ClientVerifier):
     def send_quit_signal(self):
         signal = { "action": "quit", "time": time.time()}
         self.clt_soc.send((json.dumps(signal)).encode('utf-8'))
+        exit(1)
 
     # функция отправки сигнала на остановку сервера
     @log
@@ -125,9 +125,9 @@ class Client(metaclass = ClientVerifier):
 
     def start(self):
         self.nick_name = ui.nick_lineEdit.text()
-        self.contact_list = []
+        self.password = ui.password_lineEdit.text()
+        self.contact_list = None
         self.db = ClientDataBase()
-        # self.nick_name = input('Ведите свой никнейм: ')
         try:
             clt_connect = (self.ip_addr, self.ip_port)
             client_logger.info(f'Клиент стартовал {clt_connect}')
@@ -144,7 +144,10 @@ class Client(metaclass = ClientVerifier):
             presence_answer = json.loads(self.clt_soc.recv(256).decode('utf-8'))
             if presence_answer['alert'] == '200':
                 print('Успешное подключение к серверу')
-            self.get_contacts()
+                self.get_contacts()
+            elif presence_answer['alert'] == '401':
+                print('Неверный пороль')
+                exit(1)
    
 
         user_console = threading.Thread(target=self.console, args=())
@@ -166,10 +169,12 @@ def add_local_contact():
 def start():
     ui.startbutton.hide()
     ui.nick_lineEdit.hide()
+    ui.password_lineEdit.hide()
+    ui.password_label.hide()
     Client1.start()
     ui.start_nick_label.setText(f'Ваш ник: {Client1.nick_name}')
 
-    while Client1.contact_list == []:
+    while Client1.contact_list == None:
         time.sleep(0.1)
     else:
         for contact in Client1.contact_list:
@@ -185,6 +190,9 @@ def chat_switched():
         ui.chat_window.cursorForPosition(QtCore.QPoint(1, 2))
         ui.chat_window.append(f"{msg.sender}: {msg.text}")
 
+def exit():
+    Client1.send_quit_signal()
+    
 if __name__ == '__main__':
     Client1 = Client('localhost', 7777)
 
@@ -198,6 +206,8 @@ if __name__ == '__main__':
     ui.sendbutton.clicked.connect(massage)
     ui.contacts_list.doubleClicked.connect(chat_switched)
     ui.add_contact_button.clicked.connect(add_local_contact)
+    ui.exit_Button.clicked.connect(exit)
+
     window.show() 
     sys.exit(app.exec_())
      
