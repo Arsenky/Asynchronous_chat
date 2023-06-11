@@ -1,4 +1,4 @@
-from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime
+from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime, LargeBinary
 from sqlalchemy.orm import mapper, registry, declarative_base, Session
 from datetime import datetime
 
@@ -16,9 +16,11 @@ class ServerDataBase():
         id = Column(Integer, primary_key=True) 
         login = Column(String, unique = True)
         info = Column(String, default = 'Пусто')
+        pass_hash = Column(LargeBinary)
 
-        def __init__(self, login): 
+        def __init__(self, login, pass_hash): 
             self.login = login
+            self.pass_hash = pass_hash
         
 
     class Contacts_list(Base):
@@ -85,14 +87,10 @@ class ServerDataBase():
         return self.session.query(self.User).filter_by(login=log).first().id
         
 
-
-
 # отладка
 if __name__ == '__main__':
     db = ServerDataBase()
-   # db.add_user('Ars')
-   # db.add_user('Aur')
+    # x = db.User('Aur', hash1)
+    # db.session.add(x)
     # db.session.commit()
-    x = db.session.query(db.User).filter_by(login="Val").first().id
-    print(db.get_id_by_login('Aur'))
-    print(db.get_id_by_login('Val'))
+    # print(db.session.query(db.User).filter_by(login = 'Ars').first().pass_hash)

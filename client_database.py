@@ -1,11 +1,12 @@
 from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import mapper, registry, declarative_base, Session
 from datetime import datetime
+import sqlite3
 
 print("Версия SQLAlchemy:", __version__)
 class ClientDataBase():
 
-    db_engine = create_engine('sqlite:///client_db.db3', echo=False, pool_recycle = 7200)
+    db_engine = create_engine('sqlite:///client_db.db3'+'?check_same_thread=False', echo=False, pool_recycle = 7200)
     Base = declarative_base()
     
     session = Session(autoflush=False, bind=db_engine)
