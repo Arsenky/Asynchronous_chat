@@ -90,7 +90,4 @@ class ServerDataBase():
 # отладка
 if __name__ == '__main__':
     db = ServerDataBase()
-    # x = db.User('Aur', hash1)
-    # db.session.add(x)
-    # db.session.commit()
-    # print(db.session.query(db.User).filter_by(login = 'Ars').first().pass_hash)
+  

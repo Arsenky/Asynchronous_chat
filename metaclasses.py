@@ -2,9 +2,8 @@ import dis
 from socket import socket
 
 class ClientVerifier(type):
+    """Метакласс клиента, проверяет использование сокетов для работы по TCP (наличие мотодов для работы с сокетом)"""
     def __init__(self, clsname, bases, clsdict):
-
-        # использование сокетов для работы по TCP (наличие мотодов для работы с сокетом)
         if not 'send_massage' in clsdict.keys() or not 'receive_massage' in clsdict.keys():
             raise TypeError('У клиента отсутствует метод для отправки или метод для приёма сообщений!')
        
@@ -30,12 +29,9 @@ class ClientVerifier(type):
         type.__init__(self, clsname, bases, clsdict)
 
 class ServerVerifier(type):
+    """Метакласс сервера, проверяет использование сокетов для работы по TCP (наличие мtтодов для работы с сокетом)"""
+     
     def __init__(self, clsname, bases, clsdict):
-
-        # # использование сокетов для работы по TCP (наличие мотодов для работы с сокетом)
-        # if not 'send_massage' in clsdict.keys() or not 'receive_massage' in clsdict.keys():
-        #     raise TypeError('У клиента отсутствует метод для отправки или метод для приёма сообщений!')
-       
         for key, value in clsdict.items():
             attrs = set()
 

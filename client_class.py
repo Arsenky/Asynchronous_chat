@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QWidget
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QThread
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QMainWindow, qApp
 from client_form import Ui_MainWindow
 import sys
 from sys import argv, exit
@@ -19,6 +17,7 @@ from client_database import ClientDataBase
 client_logger = logging.getLogger('client')
 
 class Client(metaclass = ClientVerifier):
+    """Описание класса клиента"""
     
     def __init__(self, ip_addr, ip_port) -> None:
         self.ip_addr = ip_addr
@@ -82,6 +81,7 @@ class Client(metaclass = ClientVerifier):
     # функция отправки сигнала серверу об отключении клиента
     @log
     def send_quit_signal(self):
+        """функция отправки сигнала серверу об отключении клиента"""
         signal = { "action": "quit", "time": time.time()}
         self.clt_soc.send((json.dumps(signal)).encode('utf-8'))
         exit(1)

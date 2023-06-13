@@ -6,7 +6,6 @@ import time
 import json
 import logging
 import log.server_log_config
-import log.server_log_config
 from log.log_decorator import log
 import select
 from metaclasses import ServerVerifier
@@ -18,7 +17,7 @@ from log_required import log_ruauired
 server_logger = logging.getLogger('server')
 
 class Port:
-
+    """Дискриптор для для порта на котором запускается сервер."""
     def __set__(self, instance, value):
         if 65000 < value or value < 0:
             raise TypeError('Некорректный порт')
@@ -41,6 +40,8 @@ class Server(metaclass = ServerVerifier):
 
     @log_ruauired
     def read_massages(self) -> list:
+        """Функция обрабатывающая всё поступающие сообщения,
+        вызывает соответствующие функции сервера и БД в зависимости от типа сообщения."""
         data = []
         for sock in self.r:
             massage = json.loads(sock.recv(1024).decode('utf-8'))
@@ -64,12 +65,15 @@ class Server(metaclass = ServerVerifier):
         return data
 
     def resend_massage(self):
+        """Функция пересылки полученных сообщений другим клиентам,
+        проходит по списку клиентов и отправляет им всё адресованные им сообщения."""
         for sock in self.w:
             for massage in self.massages:
                 if massage['reciever'] == self.clients[sock]:
                     sock.send(json.dumps(massage).encode('utf-8'))
 
     def get_contacts(self, massage : dict) -> dict:
+        """Функция обрабатывающая запрос клиента на получение списка его контактов."""
         contacts_id_list = self.db.session.query(self.db.Contacts_list).filter_by(id=self.db.get_id_by_login(massage['user_login'])).all()
         contacts_nick_list = []
         for i in contacts_id_list:
@@ -79,6 +83,9 @@ class Server(metaclass = ServerVerifier):
             
         
     def start(self):
+        """Основная функция сервера, исполняется при его запуске,
+        инициалилизуент сокет сервера, принимает подключения от клиентов и
+        обрабатывает запросы от них в бесконечном цикле."""
         self.db = ServerDataBase()
 
         print('MY Server RUN ^^^ ', end='')
@@ -99,8 +106,10 @@ class Server(metaclass = ServerVerifier):
             except OSError as e:
                 pass  # timeout вышел
             else:
+                # прием сообщения о присутствии от клиента при его подлкючении
                 presence_massage = json.loads(conn.recv(256).decode('utf-8'))
 
+                # проверка пороля из 'presence_massage'
                 dk = hashlib.pbkdf2_hmac('sha256', bytes(presence_massage['password'], encoding=('utf-8')), b'salt', 100000)
                 hash1 = (binascii.hexlify(dk))
                 hash2 = self.db.session.query(self.db.User).filter_by(login = presence_massage['nick_name']).first().pass_hash
@@ -109,11 +118,7 @@ class Server(metaclass = ServerVerifier):
                     conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '200'}).encode('utf-8'))
                     print("Получен запрос на соединение от %s" % str(addr))
                     self.clients[conn] = presence_massage['nick_name']
-                # добавление подключившегося клиента в список пользователей,
-                # в теле функции предусмотренно если клиент не новый
-                # self.db.add_user(presence_massage['nick_name'])
-
-                #запись в историю при подключении
+                
                     self.db.history(
                         self.db.get_id_by_login(presence_massage['nick_name']),
                         conn.getpeername()[0]
@@ -124,14 +129,14 @@ class Server(metaclass = ServerVerifier):
 
                 
             finally:
-                # Проверить наличие событий ввода-вывода
+                # Проверка наличия событий ввода-вывода
                 self.massages = []
                 wait = 3
                 self.r = []
                 self.w = []
                 self.r, self.w, e = select.select(self.clients.keys(), self.clients.keys(), [], wait)
 
-                # отладочные выводы
+                # отладочные выводы списков клиентов, готовых к приёму и к передаче пакетов
                 print('передающие сокеты:')
                 for sock in self.r:
                     print(sock.getpeername())
@@ -147,7 +152,7 @@ class Server(metaclass = ServerVerifier):
                     self.resend_massage()
                 
         
-
+# создание экзэмпляра класса 'Server' и его запуск
 if __name__ == '__main__':
     Server1 = Server('localhost', 7777)
     Server1.start()

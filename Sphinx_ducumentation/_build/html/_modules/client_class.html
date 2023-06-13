@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>client_class &#8212; документация Asinc_caht </title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код client_class</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">qApp</span>
+<span class="kn">from</span> <span class="nn">client_form</span> <span class="kn">import</span> <span class="n">Ui_MainWindow</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span><span class="p">,</span> <span class="n">exit</span>
+<span class="kn">from</span> <span class="nn">socket</span> <span class="kn">import</span> <span class="n">socket</span><span class="p">,</span> <span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">log.client_log_config</span><span class="o">,</span> <span class="nn">log.server_log_config</span>
+<span class="kn">from</span> <span class="nn">log.log_decorator</span> <span class="kn">import</span> <span class="n">log</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">metaclasses</span> <span class="kn">import</span> <span class="n">ClientVerifier</span>
+<span class="kn">from</span> <span class="nn">client_database</span> <span class="kn">import</span> <span class="n">ClientDataBase</span>
+
+<span class="n">client_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;client&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../client_class.html#client_class.Client">[документация]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">metaclass</span> <span class="o">=</span> <span class="n">ClientVerifier</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Описание класса клиента&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_addr</span><span class="p">,</span> <span class="n">ip_port</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_addr</span> <span class="o">=</span> <span class="n">ip_addr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span> <span class="o">=</span> <span class="n">ip_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@log</span>
+    <span class="k">def</span> <span class="nf">console</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Введите команду: &#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;massage&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_massage</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;exit&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_quit_signal</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Работа клиента завершена&#39;</span><span class="p">)</span>
+                <span class="n">client_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Работа клиента завершена&#39;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_stop_signal</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Послан сигнал на отключение сервера&#39;</span><span class="p">)</span>
+                <span class="n">client_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Послан сигнал на отключение сервера&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;add_contact&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_contact</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;del_contact&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">del_contact</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Неизвестная команда&#39;</span><span class="p">)</span>
+
+    <span class="nd">@log</span>
+    <span class="k">def</span> <span class="nf">create_presence_massage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">connection_massage</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;action&quot;</span> <span class="p">:</span> <span class="s2">&quot;presence&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s2">&quot;nick_name&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">}</span> 
+            <span class="n">client_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Сформированно сообщение о присутствии серверу&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">connection_massage</span>
+
+    <span class="nd">@log</span>     
+    <span class="k">def</span> <span class="nf">send_presence_massage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">massage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_presence_massage</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">massage</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">client_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Сообщение о присутствии отправленно серверу&#39;</span><span class="p">)</span>
+
+    <span class="nd">@log</span>
+    <span class="k">def</span> <span class="nf">receive_massage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">massage</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Сервер недоступен&#39;</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">massage</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;massage&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Принято сообщение : </span><span class="si">{</span><span class="n">massage</span><span class="p">[</span><span class="s1">&#39;user_massage&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">massage</span><span class="p">[</span><span class="s1">&#39;sender&#39;</span><span class="p">],</span> <span class="n">massage</span><span class="p">[</span><span class="s1">&#39;user_massage&#39;</span><span class="p">])</span>
+                    <span class="n">ui</span><span class="o">.</span><span class="n">chat_window</span><span class="o">.</span><span class="n">cursorForPosition</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="n">ui</span><span class="o">.</span><span class="n">chat_window</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">massage</span><span class="p">[</span><span class="s1">&#39;sender&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">massage</span><span class="p">[</span><span class="s1">&#39;user_massage&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">massage</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;get_contacts&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">contact_list</span> <span class="o">=</span> <span class="n">massage</span><span class="p">[</span><span class="s1">&#39;alert&#39;</span><span class="p">]</span>
+                
+
+    <span class="c1"># функция отправки сигнала серверу об отключении клиента</span>
+    <span class="nd">@log</span>
+    <span class="k">def</span> <span class="nf">send_quit_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;функция отправки сигнала серверу об отключении клиента&quot;&quot;&quot;</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;quit&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">signal</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># функция отправки сигнала на остановку сервера</span>
+    <span class="nd">@log</span>
+    <span class="k">def</span> <span class="nf">send_stop_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">signal</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Client.send_massage"><a class="viewcode-back" href="../client_class.html#client_class.Client.send_massage">[документация]</a>    <span class="k">def</span> <span class="nf">send_massage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reciever</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">massage</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;action&quot;</span> <span class="p">:</span> <span class="s2">&quot;massage&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span> <span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span><span class="p">,</span> <span class="s2">&quot;reciever&quot;</span> <span class="p">:</span> <span class="n">reciever</span><span class="p">,</span> <span class="s2">&quot;user_massage&quot;</span> <span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">massage</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Client.get_contacts"><a class="viewcode-back" href="../client_class.html#client_class.Client.get_contacts">[документация]</a>    <span class="k">def</span> <span class="nf">get_contacts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">massage</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;get_contacts&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span>
+            <span class="s2">&quot;user_login&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span>
+            <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">massage</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Client.add_contact"><a class="viewcode-back" href="../client_class.html#client_class.Client.add_contact">[документация]</a>    <span class="k">def</span> <span class="nf">add_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">login_for_add</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Введите логин добавляемого в контакты пользователя: &#39;</span><span class="p">)</span>
+        <span class="n">massage</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_contact&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span>
+            <span class="s2">&quot;user_login&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span><span class="p">,</span>
+            <span class="s1">&#39;login_for_add&#39;</span> <span class="p">:</span> <span class="n">login_for_add</span>
+            <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">massage</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="Client.del_contact"><a class="viewcode-back" href="../client_class.html#client_class.Client.del_contact">[документация]</a>    <span class="k">def</span> <span class="nf">del_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">login_for_del</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Введите логин удаляемого из контактов пользователя: &#39;</span><span class="p">)</span>
+        <span class="n">massage</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;del_contact&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;login_for_del&#39;</span> <span class="p">:</span> <span class="n">login_for_del</span>
+            <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">massage</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Client.start"><a class="viewcode-back" href="../client_class.html#client_class.Client.start">[документация]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nick_name</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">nick_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">password_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">ClientDataBase</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">clt_connect</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span><span class="p">)</span>
+            <span class="n">client_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Клиент стартовал </span><span class="si">{</span><span class="n">clt_connect</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">)</span>  <span class="c1"># Создать сокет TCP</span>
+
+            <span class="c1"># посылаем запрос на соединение</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_addr</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span><span class="p">)))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Сервер недоступен&#39;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_presence_massage</span><span class="p">()</span>
+            <span class="n">presence_answer</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clt_soc</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">presence_answer</span><span class="p">[</span><span class="s1">&#39;alert&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;200&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Успешное подключение к серверу&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">presence_answer</span><span class="p">[</span><span class="s1">&#39;alert&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;401&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Неверный пороль&#39;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   
+
+        <span class="n">user_console</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">user_console</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user_console</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        
+
+        <span class="n">receiver</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receive_massage</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">receiver</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">receiver</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
+
+        <span class="c1"># user_console.join()</span>
+
+
+<div class="viewcode-block" id="add_local_contact"><a class="viewcode-back" href="../client_class.html#client_class.add_local_contact">[документация]</a><span class="k">def</span> <span class="nf">add_local_contact</span><span class="p">():</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">contacts_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ui</span><span class="o">.</span><span class="n">add_contact_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">Client1</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">add_contact</span><span class="p">(</span><span class="n">ui</span><span class="o">.</span><span class="n">add_contact_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="start"><a class="viewcode-back" href="../client_class.html#client_class.start">[документация]</a><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">startbutton</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">nick_lineEdit</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">password_lineEdit</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">password_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">Client1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">start_nick_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ваш ник: </span><span class="si">{</span><span class="n">Client1</span><span class="o">.</span><span class="n">nick_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">Client1</span><span class="o">.</span><span class="n">contact_list</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">contact</span> <span class="ow">in</span> <span class="n">Client1</span><span class="o">.</span><span class="n">contact_list</span><span class="p">:</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">contacts_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">contact</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="massage"><a class="viewcode-back" href="../client_class.html#client_class.massage">[документация]</a><span class="k">def</span> <span class="nf">massage</span><span class="p">():</span>
+    <span class="n">Client1</span><span class="o">.</span><span class="n">send_massage</span><span class="p">(</span><span class="n">ui</span><span class="o">.</span><span class="n">reciever</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">ui</span><span class="o">.</span><span class="n">massage_text</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="chat_switched"><a class="viewcode-back" href="../client_class.html#client_class.chat_switched">[документация]</a><span class="k">def</span> <span class="nf">chat_switched</span><span class="p">():</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">chat_window</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">chat</span> <span class="o">=</span> <span class="n">Client1</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Client1</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">Massages_history</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">sender</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">contacts_list</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">chat</span><span class="p">:</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">chat_window</span><span class="o">.</span><span class="n">cursorForPosition</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">chat_window</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">sender</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="exit"><a class="viewcode-back" href="../client_class.html#client_class.exit">[документация]</a><span class="k">def</span> <span class="nf">exit</span><span class="p">():</span>
+    <span class="n">Client1</span><span class="o">.</span><span class="n">send_quit_signal</span><span class="p">()</span></div>
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">Client1</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">7777</span><span class="p">)</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> 
+
+    <span class="n">window</span> <span class="o">=</span> <span class="n">QMainWindow</span><span class="p">()</span> 
+    <span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_MainWindow</span><span class="p">()</span> 
+    <span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="n">ui</span><span class="o">.</span><span class="n">startbutton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">sendbutton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">massage</span><span class="p">)</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">contacts_list</span><span class="o">.</span><span class="n">doubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">chat_switched</span><span class="p">)</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">add_contact_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">add_local_contact</span><span class="p">)</span>
+    <span class="n">ui</span><span class="o">.</span><span class="n">exit_Button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">exit</span><span class="p">)</span>
+
+    <span class="n">window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+     
+
+   
+   
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Asinc_caht</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Asynchronous_chat</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Ars.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
