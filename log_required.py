@@ -1,4 +1,5 @@
 def log_ruauired(func):
+    """Декоратор проверяющий, что запрос происходит от авторизированого клиента."""
     def out_func(*args, **kwargs):
         print(locals()['args'])
         server = locals()['args'][0] # объект класса принятый функцией через self
