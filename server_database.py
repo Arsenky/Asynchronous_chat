@@ -1,4 +1,4 @@
-from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime, LargeBinary
+from sqlalchemy import __version__, create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime, LargeBinary, and_
 from sqlalchemy.orm import mapper, registry, declarative_base, Session
 from datetime import datetime
 
@@ -64,9 +64,9 @@ class ServerDataBase():
     
     def del_contact(self, client_login, contact_login):
         try:
-            instanse = self.session.query(self.Contacts_list).filter_by(
-                id = self.get_id_by_login(client_login), 
-                contact_id = self.get_id_by_login(contact_login)
+            instanse = self.session.query(self.Contacts_list).filter(and_(
+                self.Contacts_list.id == self.get_id_by_login(client_login), 
+                self.Contacts_list.contact_id == self.get_id_by_login(contact_login))
                 ).first()
             self.session.delete(instanse)
             self.session.commit()
