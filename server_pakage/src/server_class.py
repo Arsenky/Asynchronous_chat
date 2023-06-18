@@ -5,8 +5,8 @@ from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import time
 import json
 import logging
-import log.server_log_config
-from log.log_decorator import log
+import server_log_config
+from log_decorator import log
 import select
 from metaclasses import ServerVerifier
 from server_database import ServerDataBase
