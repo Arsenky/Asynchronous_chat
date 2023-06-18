@@ -2,6 +2,8 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, qApp
+from PyQt5.QtGui import QColor
+
 from client_form import Ui_MainWindow
 import sys
 from sys import argv, exit
@@ -50,7 +52,6 @@ class Client(metaclass = ClientVerifier):
                 time.sleep(1)
             else:
                 if massage['action'] == 'massage':
-                    print(f"\nПринято сообщение : {massage['user_massage']}")
                     self.db.history(massage['sender'], massage['reciever'], massage['user_massage'])
                 elif massage['action'] == 'get_contacts':
                     self.contact_list = massage['alert']
@@ -89,7 +90,7 @@ class Client(metaclass = ClientVerifier):
             'login_for_add' : login_for_add
             }
         self.clt_soc.send((json.dumps(massage)).encode('utf-8'))
-        
+        ui
     def del_contact(self, login_for_del):
         massage = {
             "action": "del_contact",
@@ -112,18 +113,21 @@ class Client(metaclass = ClientVerifier):
 
             # посылаем запрос на соединение
             self.clt_soc.connect((str(self.ip_addr), int(self.ip_port)))
-        except:
-            print('Сервер недоступен')
-            exit(1)
-        else:
             self.send_presence_massage()
             presence_answer = json.loads(self.clt_soc.recv(256).decode('utf-8'))
+            print(presence_answer)
             if presence_answer['alert'] == '200':
                 print('Успешное подключение к серверу')
                 self.get_contacts()
             elif presence_answer['alert'] == '401':
-                print('Неверный пороль')
-                exit(1)
+                self.contact_list = ['wrong pass']
+                ui.chat_window.cursorForPosition(QtCore.QPoint(1, 2))
+                ui.chat_window.setTextColor(QColor(255, 0, 0))
+                ui.chat_window.append('Неверный пароль, перезайдите!')
+        except:
+            print('Сервер недоступен')
+        
+            
    
         receiver = threading.Thread(target=self.receive_massage, args=())
         receiver.daemon = True
@@ -145,9 +149,24 @@ def start():
     ui.nick_lineEdit.hide()
     ui.password_lineEdit.hide()
     ui.password_label.hide()
+    ui.sendbutton.show()
+    ui.reciever.show()
     ui.exit_Button.show()
-    Client1.start()
+    ui.massage_text.show()
+    ui.chat_window.show()
+    ui.label1.show()
+    ui.label2.show()
+    ui.add_contact_label.show()
+    ui.contacts_list.show()
+    ui.add_contact_lineEdit.show()
+    ui.add_contact_button.show()
+    ui.del_contact_label.show()
+    ui.del_contact_button.show()
+    ui.contacts_list_label.show()
+    ui.chat_label.show()
     ui.start_nick_label.setText(f'Ваш ник: {Client1.nick_name}')
+    Client1.start()
+    
 
     while Client1.contact_list == None:
         time.sleep(0.1)
@@ -159,6 +178,7 @@ def massage():
     Client1.send_massage(ui.reciever.text(), ui.massage_text.toPlainText())
 
 def chat_switched():
+    ui.chat_label.setText(f'Час с: {ui.contacts_list.currentItem().text()}')
     ui.chat_window.clear()
     print(Client1.nick_name, ui.contacts_list.currentItem().text())
     chat = Client1.db.session.query(Client1.db.Massages_history).filter(or_(

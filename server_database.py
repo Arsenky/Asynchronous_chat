@@ -46,9 +46,9 @@ class ServerDataBase():
                 
     Base.metadata.create_all(bind=db_engine)
 
-    def add_user(self, login):
+    def add_user(self, login, pass_hash):
         try:
-            user = self.User(login)
+            user = self.User(login, pass_hash)
             self.session.add(user)
             self.session.commit()
         except:

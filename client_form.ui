@@ -220,37 +220,28 @@
    <widget class="QLabel" name="del_contact_label">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>120</y>
-      <width>131</width>
-      <height>17</height>
+      <x>570</x>
+      <y>270</y>
+      <width>151</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Удалить контакт:</string>
+     <string>Удалить контакт 
+выбранный в списке:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="del_contact_button">
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>170</y>
+      <y>310</y>
       <width>99</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
      <string>Удалить</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="del_contact_lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>140</y>
-      <width>113</width>
-      <height>27</height>
-     </rect>
     </property>
    </widget>
    <widget class="QLabel" name="contacts_list_label">

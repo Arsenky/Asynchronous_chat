@@ -109,12 +109,12 @@ class Server(metaclass = ServerVerifier):
                 # прием сообщения о присутствии от клиента при его подлкючении
                 presence_massage = json.loads(conn.recv(256).decode('utf-8'))
 
-                # проверка пороля из 'presence_massage'
-                dk = hashlib.pbkdf2_hmac('sha256', bytes(presence_massage['password'], encoding=('utf-8')), b'salt', 100000)
-                hash1 = (binascii.hexlify(dk))
-                hash2 = self.db.session.query(self.db.User).filter_by(login = presence_massage['nick_name']).first().pass_hash
-                
-                if hmac.compare_digest(hash1, hash2):
+                if not self.db.session.query(self.db.User).filter_by(login = presence_massage['nick_name']).all():
+                    self.db.add_user(
+                        presence_massage['nick_name'], 
+                        hashlib.pbkdf2_hmac('sha256', bytes(presence_massage['password'], encoding=('utf-8')), b'salt', 100000)
+                        )
+
                     conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '200'}).encode('utf-8'))
                     print("Получен запрос на соединение от %s" % str(addr))
                     self.clients[conn] = presence_massage['nick_name']
@@ -123,9 +123,26 @@ class Server(metaclass = ServerVerifier):
                         self.db.get_id_by_login(presence_massage['nick_name']),
                         conn.getpeername()[0]
                     )
+                    print('новый')
                 else:
-                    conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '401'}).encode('utf-8'))
-                    conn.close()
+                    print('старый')
+                    # проверка пороля из 'presence_massage'
+                    hash1 = hashlib.pbkdf2_hmac('sha256', bytes(presence_massage['password'], encoding=('utf-8')), b'salt', 100000)
+                    hash2 = self.db.session.query(self.db.User).filter_by(login = presence_massage['nick_name']).first().pass_hash
+                    
+                    
+                    if hmac.compare_digest(hash1, hash2):
+                        conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '200'}).encode('utf-8'))
+                        print("Получен запрос на соединение от %s" % str(addr))
+                        self.clients[conn] = presence_massage['nick_name']
+                    
+                        self.db.history(
+                            self.db.get_id_by_login(presence_massage['nick_name']),
+                            conn.getpeername()[0]
+                        )
+                    else:
+                        conn.send(json.dumps({'action' : 'presence_answer', 'time' : time.time(), 'alert' : '401'}).encode('utf-8'))
+                        # conn.close()
 
                 
             finally:
